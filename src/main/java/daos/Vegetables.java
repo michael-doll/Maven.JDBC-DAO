@@ -12,8 +12,6 @@ public class Vegetables implements DTOInterface {
     public Vegetables(){}
     public Vegetables(String vegetableName){};
     public Vegetables(Integer vegetableId, String vegetableName, String vegetableColor, String vegetableTexture, String vegetableWeight){}
-    public Vegetables(String vegetableName, String vegetableColor, String vegetableTexture, String vegetableWeight){}
-
 
     public Integer getVegetableId() {
         return vegetableId;

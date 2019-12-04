@@ -1,9 +1,9 @@
 package daos;
 
-import java.sql.Connection;
-import java.sql.ResultSet;
-import java.sql.SQLException;
-import java.sql.Statement;
+import com.sun.jdi.connect.Connector;
+
+import javax.imageio.plugins.jpeg.JPEGImageReadParam;
+import java.sql.*;
 import java.util.ArrayList;
 import java.util.List;
 
@@ -15,6 +15,15 @@ public class DAO implements DAOInterface {
 
     @Override
     public Vegetables findById(Integer id) {
+        // Should follow this example
+        //private User extractUserFromResultSet(ResultSet rs) throws SQLException {
+        //    User user = new User();
+        //    user.setId( rs.getInt("id") );
+        //    user.setName( rs.getString("name") );
+        //    user.setPass( rs.getString("pass") );
+        //    user.setAge( rs.getInt("age") );
+        //    return user;
+        //}
         try{
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM Vegetables WHERE vegetableId=" + id);
@@ -27,10 +36,10 @@ public class DAO implements DAOInterface {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-//        finally {
-//            try{connection.close();} catch(SQLException se){}
-//
-//        }
+        finally {
+            try{connection.close();} catch(SQLException se){}
+
+        }
         return null;
     }
 
@@ -44,8 +53,8 @@ public class DAO implements DAOInterface {
                 veg.setVegetableName(resultSet.getString("vegetableName"));
                 System.out.println(veg.getVegetableName()); // Test
                 veggiesList.add(veg);
-                return veggiesList;
             }
+            return veggiesList;
         } catch (SQLException e) {
             e.printStackTrace();
         }
@@ -54,7 +63,20 @@ public class DAO implements DAOInterface {
 
     @Override
     public Boolean update(Vegetables dto) {
-        return null;
+
+        try {
+            PreparedStatement ps = createStatement(statementType.UPDATE,connection,dto);
+            int c = ps.executeUpdate();
+            if(c == 1){
+                return true;
+            }
+        } catch (SQLException ex) {
+            ex.printStackTrace();
+        } finally {
+            try{connection.close();} catch(SQLException se){}
+
+        }
+        return false;
     }
 
     @Override
@@ -67,4 +89,44 @@ public class DAO implements DAOInterface {
         return null;
     }
 
+    private PreparedStatement createStatement(statementType stmnt, Connection connection, Vegetables veg) throws SQLException {
+        PreparedStatement ps;
+    if(stmnt.getStatementType().equals("Insert")){
+        ps = connection.prepareStatement("INSERT INTO vegetables VALUES (?,?,?,?)");
+        ps.setString(1, veg.getVegetableName());
+        ps.setString(2, veg.getVegetableColor());
+        ps.setString(3, veg.getVegetableTexture());
+        ps.setString(4, veg.getVegetableWeight());
+        return ps;
+    }
+        if(stmnt.getStatementType().equals("Update")){
+            ps = connection.prepareStatement("UPDATE vegetables SET vegetableName=?,vegetableColor=?,vegetableTexture=? WHERE vegetableId=?");
+            ps.setString(1, veg.getVegetableName());
+            ps.setString(2, veg.getVegetableColor());
+            ps.setString(3, veg.getVegetableTexture());
+            ps.setString(4, veg.getVegetableWeight());
+            return ps;
+    }
+        return null;
+}
+
+enum statementType {
+    INSERT(1, "Insert"), UPDATE(2, "Update");
+    private String statementType;
+    private Integer key;
+
+    statementType(Integer key, String statementType) {
+        this.key = key;
+        this.statementType = statementType;
+    }
+
+    public String getStatementType() {
+        return statementType;
+    }
+
+    public Integer getKey() {
+        return key;
+    }
+
+    }
 }

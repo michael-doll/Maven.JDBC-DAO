@@ -4,6 +4,7 @@ import org.junit.Assert;
 import org.junit.Before;
 import org.junit.Test;
 
+import java.sql.Array;
 import java.sql.Connection;
 import java.sql.SQLException;
 import java.util.ArrayList;
@@ -30,17 +31,24 @@ public class DAOTest {
     String actual = dao.findById(1).getVegetableName();
         Assert.assertEquals(expected,actual);
     }
-
+//Not a good test
     @Test
     public void findAllTest() {
-        List<Vegetables> testList = dao.findAll();
-        for(Vegetables veggies: testList){
-            System.out.println(veggies.getVegetableName());
-        }
+        List<Vegetables> actualList = dao.findAll();
+        //Testing first and last
+        Assert.assertEquals(actualList.get(0).getVegetableName(),"Arugula");
+        Assert.assertEquals(actualList.get(actualList.size()-1).getVegetableName(),"Corn");
     }
 
     @Test
     public void updateTest() {
+        Vegetables updateVeg = new Vegetables("TestVeg");
+        Integer expected = 90;
+        updateVeg.setVegetableId(expected);
+        dao.update(updateVeg);
+        Vegetables testVeg = dao.findById(expected);
+        Integer actual = testVeg.getVegetableId();
+        Assert.assertEquals(expected,actual);
     }
 
     @Test
