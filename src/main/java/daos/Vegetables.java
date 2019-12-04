@@ -1,4 +1,8 @@
-public class Vegetables {
+package daos;
+
+import java.util.List;
+
+public class Vegetables implements DTOInterface {
     private Integer vegetableId;
     private String vegetableName;
     private String vegetableColor;
@@ -6,6 +10,7 @@ public class Vegetables {
     private String vegetableWeight;
 
     public Vegetables(){}
+    public Vegetables(String vegetableName){};
     public Vegetables(Integer vegetableId, String vegetableName, String vegetableColor, String vegetableTexture, String vegetableWeight){}
     public Vegetables(String vegetableName, String vegetableColor, String vegetableTexture, String vegetableWeight){}
 
@@ -48,5 +53,12 @@ public class Vegetables {
 
     public void setVegetableWeight(String vegetableWeight) {
         this.vegetableWeight = vegetableWeight;
+    }
+
+
+
+    @Override
+    public Integer getID() {
+        return vegetableId;
     }
 }
