@@ -41,10 +41,12 @@ public class ConnectionFactory {
 //                System.out.println("Total veggies in tables : " + count);
 
 //            }
+            System.out.println("You did it!");
         }catch (SQLException sqlEx){
+            System.out.println("Eh...");
             sqlEx.printStackTrace();
         }
-        return null ;
+        return con ;
     }
 }
 

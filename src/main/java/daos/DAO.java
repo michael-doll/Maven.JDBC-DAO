@@ -10,34 +10,45 @@ import java.util.List;
 public class DAO implements DAOInterface {
 
     private List<Vegetables> veggiesList = new ArrayList<Vegetables>();
+    Connection connection = ConnectionFactory.getConnection();
+
 
     @Override
     public Vegetables findById(Integer id) {
         try{
-            Connection connection = ConnectionFactory.getConnection();
-
             Statement statement = connection.createStatement();
             ResultSet resultSet = statement.executeQuery("SELECT * FROM Vegetables WHERE vegetableId=" + id);
+            if(resultSet.next()) {
+                Vegetables veg = new Vegetables();
+                veg.setVegetableId(id);
+                veg.setVegetableName(resultSet.getString("vegetableName"));
+                return veg;
+            }
         } catch (SQLException e) {
             e.printStackTrace();
         }
 //        finally {
 //            try{connection.close();} catch(SQLException se){}
+//
 //        }
         return null;
     }
 
     @Override
     public List<Vegetables> findAll() {
-//        try{
-//            Statement statement = connection.createStatement();
-//            ResultSet resultSet = statement.executeQuery("SELECT * FROM Vegetables");
-//            while(resultSet.next()){
-//                veggiesList.add(new Vegetables(resultSet.getString("vegetableName")));
-//            }
-//        } catch (SQLException e) {
-//            e.printStackTrace();
-//        }
+        try{
+            Statement statement = connection.createStatement();
+            ResultSet resultSet = statement.executeQuery("SELECT * FROM Vegetables");
+            while(resultSet.next()){
+                Vegetables veg = new Vegetables();
+                veg.setVegetableName(resultSet.getString("vegetableName"));
+                System.out.println(veg.getVegetableName()); // Test
+                veggiesList.add(veg);
+                return veggiesList;
+            }
+        } catch (SQLException e) {
+            e.printStackTrace();
+        }
         return null;
     }
 
