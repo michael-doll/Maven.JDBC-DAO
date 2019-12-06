@@ -39,15 +39,14 @@ public class DAOTest {
         Assert.assertEquals(actualList.get(0).getVegetableName(),"Arugula");
         Assert.assertEquals(actualList.get(actualList.size()-1).getVegetableName(),"Corn");
     }
-
+    //Not currently testing an update**
     @Test
     public void updateTest() {
-        Vegetables updateVeg = new Vegetables("TestVeg");
-        Integer expected = 90;
-        updateVeg.setVegetableId(expected);
-        dao.update(updateVeg);
-        Vegetables testVeg = dao.findById(expected);
-        Integer actual = testVeg.getVegetableId();
+        Vegetables current = dao.findById(2);
+        String expected = "Different Color";
+        current.setVegetableColor(expected);
+        String actual = current.getVegetableColor();
+        dao.update(current);
         Assert.assertEquals(expected,actual);
     }
 

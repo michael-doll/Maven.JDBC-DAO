@@ -36,10 +36,10 @@ public class DAO implements DAOInterface {
         } catch (SQLException e) {
             e.printStackTrace();
         }
-        finally {
-            try{connection.close();} catch(SQLException se){}
-
-        }
+//        finally {
+//            try{connection.close();} catch(SQLException se){}
+//
+//        }
         return null;
     }
 
@@ -66,16 +66,20 @@ public class DAO implements DAOInterface {
 
         try {
             PreparedStatement ps = createStatement(statementType.UPDATE,connection,dto);
+            assert ps != null;
             int c = ps.executeUpdate();
             if(c == 1){
                 return true;
             }
         } catch (SQLException ex) {
             ex.printStackTrace();
-        } finally {
-            try{connection.close();} catch(SQLException se){}
-
         }
+//        finally {
+//            try{connection.close();}
+//            catch(SQLException se) {
+//                se.printStackTrace();
+//                }
+//        }
         return false;
     }
 
@@ -92,7 +96,7 @@ public class DAO implements DAOInterface {
     private PreparedStatement createStatement(statementType stmnt, Connection connection, Vegetables veg) throws SQLException {
         PreparedStatement ps;
     if(stmnt.getStatementType().equals("Insert")){
-        ps = connection.prepareStatement("INSERT INTO vegetables VALUES (?,?,?,?)");
+        ps = connection.prepareStatement("INSERT INTO vegetables VALUES (NULL,?,?,?,?)");
         ps.setString(1, veg.getVegetableName());
         ps.setString(2, veg.getVegetableColor());
         ps.setString(3, veg.getVegetableTexture());

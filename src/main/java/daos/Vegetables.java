@@ -10,8 +10,16 @@ public class Vegetables implements DTOInterface {
     private String vegetableWeight;
 
     public Vegetables(){}
-    public Vegetables(String vegetableName){};
-    public Vegetables(Integer vegetableId, String vegetableName, String vegetableColor, String vegetableTexture, String vegetableWeight){}
+    public Vegetables(String vegetableName){
+        this.vegetableName = vegetableName;
+    };
+    public Vegetables(Integer vegetableId, String vegetableName, String vegetableColor, String vegetableTexture, String vegetableWeight){
+        this.vegetableId = vegetableId;
+        this.vegetableName = vegetableName;
+        this.vegetableColor = vegetableColor;
+        this.vegetableTexture = vegetableTexture;
+        this.vegetableWeight = vegetableWeight;
+    }
 
     public Integer getVegetableId() {
         return vegetableId;
